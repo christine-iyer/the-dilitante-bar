@@ -3,10 +3,12 @@
      margin: auto;
      padding: 20px;
      font-family: sans-serif;
+     background-color: rgba(210, 105, 30, 0.137);
    }
    
    .section {
      margin-bottom: 20px;
+     border-bottom-color: antiquewhite;
    }
    
    select, button, input {
@@ -22,7 +24,7 @@
    .workshop-list li {
      padding: 10px;
      margin-bottom: 10px;
-     background-color: #f1f1f1;
+     background-color: rgb(247, 168, 65);
      border-radius: 5px;
    }
    
