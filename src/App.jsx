@@ -75,8 +75,12 @@ function App() {
     const workshop = workshops.find((w) => w.subject === subject);
     if (!workshop) return;
   
-    const alreadyInWorkshop = workshop.students.includes(studentName);
-    if (alreadyInWorkshop) return;
+    if (workshop.students.includes(studentName)) return;
+  
+    if (workshop.students.length >= 10) {
+      alert("This workshop is full. Maximum 10 students allowed.");
+      return;
+    }
   
     const updatedWorkshop = {
       ...workshop,
@@ -85,6 +89,7 @@ function App() {
   
     await updateWorkshop(updatedWorkshop);
   };
+  
 
   const fallback = () => {
     setStudents(DEFAULT_STUDENTS);
@@ -131,16 +136,26 @@ function App() {
 
   const handleAssign = () => {
     if (!selectedWorkshop) return;
+  
     const found = workshops.find((w) => w.subject === selectedWorkshop);
     if (!found) return;
+  
+    if (found.students.includes(assignedStudent)) return;
+  
+    if (found.students.length >= 10) {
+      alert("This workshop is full. Maximum 10 students allowed.");
+      return;
+    }
+  
     const updated = {
       ...found,
-      students: [...new Set([...found.students, assignedStudent])],
+      students: [...found.students, assignedStudent],
       instructors: [...new Set([...found.instructors, assignedInstructor])],
     };
+  
     updateWorkshop(updated);
   };
-
+  
   return (
     <div className="container">
       <h1>Codebar Management</h1>
