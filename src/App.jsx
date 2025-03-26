@@ -78,92 +78,73 @@ function App() {
 
   const handleAssign = () => {
     if (!selectedWorkshop) return;
-
-    const updated = workshops.map((w) => {
-      if (w.subject === selectedWorkshop) {
-        const updatedWorkshop = {
-          ...w,
-          students: [...new Set([...w.students, assignedStudent])],
-          instructors: [...new Set([...w.instructors, assignedInstructor])],
-        };
-        updateWorkshop(updatedWorkshop);
-        return updatedWorkshop;
-      }
-      return w;
-    });
-
-    setWorkshops(updated);
+    const found = workshops.find((w) => w.subject === selectedWorkshop);
+    if (!found) return;
+    const updated = {
+      ...found,
+      students: [...new Set([...found.students, assignedStudent])],
+      instructors: [...new Set([...found.instructors, assignedInstructor])],
+    };
+    updateWorkshop(updated);
   };
 
   return (
     <div className="container">
       <h1>Codebar Management</h1>
 
-      {/* Workshop Form */}
       <div className="section">
         <h2>Create Workshop</h2>
-        <input name="date" value={newWorkshop.date} onChange={(e) => setNewWorkshop({ ...newWorkshop, date: e.target.value })} placeholder="Date" />
-        <input name="subject" value={newWorkshop.subject} onChange={(e) => setNewWorkshop({ ...newWorkshop, subject: e.target.value })} placeholder="Subject" />
+        <input placeholder="Date" value={newWorkshop.date} onChange={(e) => setNewWorkshop({ ...newWorkshop, date: e.target.value })} />
+        <input placeholder="Subject" value={newWorkshop.subject} onChange={(e) => setNewWorkshop({ ...newWorkshop, subject: e.target.value })} />
         <button onClick={() => postAndRefresh("http://127.0.0.1:8000/workshops", newWorkshop, fetchData)}>Add Workshop</button>
       </div>
 
-      {/* Student Form */}
       <div className="section">
         <h2>Create Student</h2>
-        <input name="full_name" value={newStudent.full_name} onChange={(e) => setNewStudent({ ...newStudent, full_name: e.target.value })} placeholder="Name" />
-        <input name="reason" value={newStudent.reason} onChange={(e) => setNewStudent({ ...newStudent, reason: e.target.value })} placeholder="Reason" />
+        <input placeholder="Name" value={newStudent.full_name} onChange={(e) => setNewStudent({ ...newStudent, full_name: e.target.value })} />
+        <input placeholder="Reason" value={newStudent.reason} onChange={(e) => setNewStudent({ ...newStudent, reason: e.target.value })} />
         <button onClick={() => postAndRefresh("http://127.0.0.1:8000/students", newStudent, fetchData)}>Add Student</button>
       </div>
 
-      {/* Instructor Form */}
       <div className="section">
         <h2>Create Instructor</h2>
-        <input name="full_name" value={newInstructor.full_name} onChange={(e) => setNewInstructor({ ...newInstructor, full_name: e.target.value })} placeholder="Name" />
-        <input name="bio" value={newInstructor.bio} onChange={(e) => setNewInstructor({ ...newInstructor, bio: e.target.value })} placeholder="Bio" />
-        <input value={skillInput} onChange={(e) => setSkillInput(e.target.value)} placeholder="Skill" />
+        <input placeholder="Name" value={newInstructor.full_name} onChange={(e) => setNewInstructor({ ...newInstructor, full_name: e.target.value })} />
+        <input placeholder="Bio" value={newInstructor.bio} onChange={(e) => setNewInstructor({ ...newInstructor, bio: e.target.value })} />
+        <input placeholder="Skill" value={skillInput} onChange={(e) => setSkillInput(e.target.value)} />
         <button onClick={() => {
           if (skillInput.trim()) {
-            setNewInstructor({
-              ...newInstructor,
-              skills: [...newInstructor.skills, skillInput.trim()],
-            });
+            setNewInstructor({ ...newInstructor, skills: [...newInstructor.skills, skillInput.trim()] });
             setSkillInput("");
           }
         }}>Add Skill</button>
         <button onClick={() => postAndRefresh("http://127.0.0.1:8000/instructors", newInstructor, fetchData)}>Add Instructor</button>
       </div>
 
-      {/* Assignment Section */}
       <div className="section">
         <h2>Assign to Workshop</h2>
         <select onChange={(e) => setSelectedWorkshop(e.target.value)} defaultValue="">
           <option value="" disabled>Select Workshop</option>
           {workshops.map((w, i) => <option key={i} value={w.subject}>{w.subject}</option>)}
         </select>
-
         <select onChange={(e) => setAssignedStudent(e.target.value)} defaultValue="">
           <option value="" disabled>Select Student</option>
           {students.map((s, i) => <option key={i} value={s.full_name}>{s.full_name}</option>)}
         </select>
-
         <select onChange={(e) => setAssignedInstructor(e.target.value)} defaultValue="">
           <option value="" disabled>Select Instructor</option>
           {instructors.map((inst, i) => <option key={i} value={inst.full_name}>{inst.full_name}</option>)}
         </select>
-
         <button onClick={handleAssign}>Assign</button>
       </div>
 
-      {/* Display Workshops */}
       <div className="section">
-        <h2>Workshop Overview</h2>
+        <h2>Workshops</h2>
         <ul>
           {workshops.map((w, i) => (
             <li key={i}>
-              <strong>{w.subject}</strong><br />
-              <small>Date: {w.date || "TBD"}</small><br />
-              <strong>Instructors:</strong> {w.instructors?.join(", ") || "None"}<br />
-              <strong>Students:</strong> {w.students?.join(", ") || "None"}
+              <strong>{w.subject}</strong> ({w.date || "TBD"})<br />
+              Instructors: {w.instructors?.join(", ") || "None"}<br />
+              Students: {w.students?.join(", ") || "None"}
             </li>
           ))}
         </ul>
