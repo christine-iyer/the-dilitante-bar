@@ -27,4 +27,11 @@
      background-color: rgb(247, 168, 65);
      border-radius: 5px;
    }
-   
+   .workshop-card {
+    border: 1px solid #ccc;
+    padding: 12px;
+    margin-bottom: 8px;
+    background-color: #f9f9f9;
+    min-height: 100px;
+  }
+  

@@ -1,6 +1,44 @@
 import React, { useState, useEffect } from "react";
 import axios from "axios";
+import { useDrag, useDrop } from "react-dnd";
 import "./App.css";
+
+const ItemTypes = {
+  STUDENT: "student",
+};
+
+const DraggableStudent = ({ student }) => {
+  const [{ isDragging }, dragRef] = useDrag(() => ({
+    type: ItemTypes.STUDENT,
+    item: { full_name: student.full_name },
+    collect: (monitor) => ({
+      isDragging: monitor.isDragging(),
+    }),
+  }));
+
+  return (
+    <div ref={dragRef} style={{ opacity: isDragging ? 0.5 : 1 }}>
+      🧑 {student.full_name}
+    </div>
+  );
+};
+
+const WorkshopCard = ({ workshop, onDropStudent }) => {
+  const [, dropRef] = useDrop(() => ({
+    accept: ItemTypes.STUDENT,
+    drop: (item) => onDropStudent(workshop.subject, item.full_name),
+  }));
+
+  return (
+    <div ref={dropRef} className="workshop-card">
+      <strong>{workshop.subject}</strong><br />
+      <small>Date: {workshop.date || "TBD"}</small><br />
+      <strong>Instructors:</strong> {workshop.instructors?.join(", ") || "None"}<br />
+      <strong>Students:</strong> {workshop.students?.join(", ") || "None"}
+    </div>
+  );
+};
+
 
 const DEFAULT_STUDENTS = [
   { full_name: "Laura", reason: "Edification" },
@@ -32,6 +70,21 @@ function App() {
   const [selectedWorkshop, setSelectedWorkshop] = useState("");
   const [assignedStudent, setAssignedStudent] = useState("");
   const [assignedInstructor, setAssignedInstructor] = useState("");
+
+  const handleDropStudent = async (subject, studentName) => {
+    const workshop = workshops.find((w) => w.subject === subject);
+    if (!workshop) return;
+  
+    const alreadyInWorkshop = workshop.students.includes(studentName);
+    if (alreadyInWorkshop) return;
+  
+    const updatedWorkshop = {
+      ...workshop,
+      students: [...workshop.students, studentName],
+    };
+  
+    await updateWorkshop(updatedWorkshop);
+  };
 
   const fallback = () => {
     setStudents(DEFAULT_STUDENTS);
@@ -149,6 +202,19 @@ function App() {
           ))}
         </ul>
       </div>
+      <div className="section">
+  <h2>Drag Students</h2>
+  {students.map((student, i) => (
+    <DraggableStudent key={i} student={student} />
+  ))}
+</div>
+
+<div className="section">
+  <h2>Workshops (Drop Students Here)</h2>
+  {workshops.map((w, i) => (
+    <WorkshopCard key={i} workshop={w} onDropStudent={handleDropStudent} />
+  ))}
+</div>
     </div>
   );
 }
