@@ -74,22 +74,22 @@ function App() {
   const handleDropStudent = async (subject, studentName) => {
     const workshop = workshops.find((w) => w.subject === subject);
     if (!workshop) return;
-  
+
     if (workshop.students.includes(studentName)) return;
-  
+
     if (workshop.students.length >= 10) {
       alert("This workshop is full. Maximum 10 students allowed.");
       return;
     }
-  
+
     const updatedWorkshop = {
       ...workshop,
       students: [...workshop.students, studentName],
     };
-  
+
     await updateWorkshop(updatedWorkshop);
   };
-  
+
 
   const fallback = () => {
     setStudents(DEFAULT_STUDENTS);
@@ -136,26 +136,26 @@ function App() {
 
   const handleAssign = () => {
     if (!selectedWorkshop) return;
-  
+
     const found = workshops.find((w) => w.subject === selectedWorkshop);
     if (!found) return;
-  
+
     if (found.students.includes(assignedStudent)) return;
-  
+
     if (found.students.length >= 10) {
       alert("This workshop is full. Maximum 10 students allowed.");
       return;
     }
-  
+
     const updated = {
       ...found,
       students: [...found.students, assignedStudent],
       instructors: [...new Set([...found.instructors, assignedInstructor])],
     };
-  
+
     updateWorkshop(updated);
   };
-  
+
   return (
     <div className="container">
       <h1>Codebar Management</h1>
@@ -218,18 +218,20 @@ function App() {
         </ul>
       </div>
       <div className="section">
-  <h2>Drag Students</h2>
-  {students.map((student, i) => (
-    <DraggableStudent key={i} student={student} />
-  ))}
-</div>
+        <h2>Drag Students</h2>
+        {students.map((student, i) => (
+          <DraggableStudent key={i} student={student} />
+        ))}
+      </div>
 
-<div className="section">
-  <h2>Workshops (Drop Students Here)</h2>
-  {workshops.map((w, i) => (
-    <WorkshopCard key={i} workshop={w} onDropStudent={handleDropStudent} />
-  ))}
-</div>
+      <div className="section">
+        <h2>Workshops (Drop Students Here)</h2>
+        <div className="workshop-grid">
+          {workshops.map((w, i) => (
+            <WorkshopCard key={i} workshop={w} onDropStudent={handleDropStudent} />
+          ))}
+        </div>
+      </div>
     </div>
   );
 }
