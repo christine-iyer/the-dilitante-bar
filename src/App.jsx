@@ -8,6 +8,9 @@ const ItemTypes = {
 };
 
 const DraggableStudent = ({ student }) => {
+  const emojis = ["🐶", "🐱", "🐻", "🐸", "🐽", "🐯"];
+  const randomEmoji = emojis[Math.floor(Math.random() * emojis.length)];
+
   const [{ isDragging }, dragRef] = useDrag(() => ({
     type: ItemTypes.STUDENT,
     item: { full_name: student.full_name },
@@ -18,7 +21,7 @@ const DraggableStudent = ({ student }) => {
 
   return (
     <div ref={dragRef} style={{ opacity: isDragging ? 0.5 : 1 }}>
-      🧑 {student.full_name}
+       {randomEmoji}  {student.full_name}
     </div>
   );
 };
