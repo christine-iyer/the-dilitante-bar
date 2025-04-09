@@ -20,7 +20,7 @@ const DraggableStudent = ({ student }) => {
   }));
 
   return (
-    <div ref={dragRef} style={{ opacity: isDragging ? 0.5 : 1 }}>
+    <div ref={dragRef} style={{ opacity: isDragging ? 0.5 : 1, border: "1px solid black", padding: "10px", margin: "10px", cursor: "move" , borderRadius: "10px"}}>
        {randomEmoji}  {student.full_name}
     </div>
   );
