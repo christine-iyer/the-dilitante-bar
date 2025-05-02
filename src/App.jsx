@@ -13,7 +13,7 @@ const DraggableStudent = ({ student }) => {
 
   const [{ isDragging }, dragRef] = useDrag(() => ({
     type: ItemTypes.STUDENT,
-    item: { full_name: student.full_name },
+    item: { name: student.name },
     collect: (monitor) => ({
       isDragging: monitor.isDragging(),
     }),
@@ -21,7 +21,7 @@ const DraggableStudent = ({ student }) => {
 
   return (
     <div ref={dragRef} style={{ opacity: isDragging ? 0.5 : 1, border: "1px solid black", padding: "10px", margin: "10px", cursor: "move" , borderRadius: "10px"}}>
-       {randomEmoji}  {student.full_name}
+       {randomEmoji}  {student.name}
     </div>
   );
 };
@@ -29,7 +29,7 @@ const DraggableStudent = ({ student }) => {
 const WorkshopCard = ({ workshop, onDropStudent }) => {
   const [, dropRef] = useDrop(() => ({
     accept: ItemTypes.STUDENT,
-    drop: (item) => onDropStudent(workshop.subject, item.full_name),
+    drop: (item) => onDropStudent(workshop.subject, item.name),
   }));
 
   return (
@@ -44,30 +44,30 @@ const WorkshopCard = ({ workshop, onDropStudent }) => {
 
 
 const DEFAULT_STUDENTS = [
-  { full_name: "Laura", reason: "Edification" },
-  { full_name: "Chris", reason: "Remedial" },
+  { name: "Laura", reasons: "Edification" },
+  { name: "Chris", reasons: "Remedial" },
 ];
 
 const DEFAULT_INSTRUCTORS = [
-  { full_name: "Proust", bio: "I write and read", skills: [] },
-  { full_name: "Desmond", bio: "", skills: ["bilingual", "written word"] },
-  { full_name: "Hamilton", bio: "", skills: [] },
-  { full_name: "Norton", bio: "", skills: [] },
+  { name: "Proust", bio: "I write and read", skills: [] },
+  { name: "Desmond", bio: "", skills: ["bilingual", "written word"] },
+  { name: "Hamilton", bio: "", skills: [] },
+  { name: "Norton", bio: "", skills: [] },
 ];
 
 const DEFAULT_WORKSHOPS = [
-  { date: "", subject: "Hindi", instructors: ["Norton"], students: [] },
-  { date: "", subject: "PMBA", instructors: ["Desmond"], students: [] },
-  { date: "", subject: "RTP", instructors: ["Proust"], students: [] },
-  { date: "", subject: "Federalist", instructors: ["Hamilton"], students: [] },
+  { date: "", subject: "Hindi", instructors: ["Norton"], students: [], description: "Learn Somethibg New" },
+  { date: "", subject: "PMBA", instructors: ["Desmond"], students: [], description: "Learn Somethibg New" },
+  { date: "", subject: "RTP", instructors: ["Proust"], students: [], description: "Learn Somethibg New" },
+  { date: "", subject: "Federalist", instructors: ["Hamilton"], students: [], description: "Learn Somethibg New" },
 ];
 
 function App() {
   const [students, setStudents] = useState([]);
   const [instructors, setInstructors] = useState([]);
   const [workshops, setWorkshops] = useState([]);
-  const [newStudent, setNewStudent] = useState({ full_name: "", reason: "" });
-  const [newInstructor, setNewInstructor] = useState({ full_name: "", bio: "", skills: [] });
+  const [newStudent, setNewStudent] = useState({ name: "", reasons: "" });
+  const [newInstructor, setNewInstructor] = useState({ name: "", bio: "", skills: [] });
   const [newWorkshop, setNewWorkshop] = useState({ date: "", subject: "" });
   const [skillInput, setSkillInput] = useState("");
   const [selectedWorkshop, setSelectedWorkshop] = useState("");
@@ -172,14 +172,14 @@ function App() {
 
       <div className="section">
         <h2>Create Student</h2>
-        <input placeholder="Name" value={newStudent.full_name} onChange={(e) => setNewStudent({ ...newStudent, full_name: e.target.value })} />
-        <input placeholder="Reason" value={newStudent.reason} onChange={(e) => setNewStudent({ ...newStudent, reason: e.target.value })} />
+        <input placeholder="Name" value={newStudent.name} onChange={(e) => setNewStudent({ ...newStudent, name: e.target.value })} />
+        <input placeholder="Reason" value={newStudent.reasons} onChange={(e) => setNewStudent({ ...newStudent, reasons: e.target.value })} />
         <button onClick={() => postAndRefresh("http://127.0.0.1:8000/students", newStudent, fetchData)}>Add Student</button>
       </div>
 
       <div className="section">
         <h2>Create Instructor</h2>
-        <input placeholder="Name" value={newInstructor.full_name} onChange={(e) => setNewInstructor({ ...newInstructor, full_name: e.target.value })} />
+        <input placeholder="Name" value={newInstructor.name} onChange={(e) => setNewInstructor({ ...newInstructor, name: e.target.value })} />
         <input placeholder="Bio" value={newInstructor.bio} onChange={(e) => setNewInstructor({ ...newInstructor, bio: e.target.value })} />
         <input placeholder="Skill" value={skillInput} onChange={(e) => setSkillInput(e.target.value)} />
         <button onClick={() => {
@@ -199,11 +199,11 @@ function App() {
         </select>
         <select onChange={(e) => setAssignedStudent(e.target.value)} defaultValue="">
           <option value="" disabled>Select Student</option>
-          {students.map((s, i) => <option key={i} value={s.full_name}>{s.full_name}</option>)}
+          {students.map((s, i) => <option key={i} value={s.name}>{s.name}</option>)}
         </select>
         <select onChange={(e) => setAssignedInstructor(e.target.value)} defaultValue="">
           <option value="" disabled>Select Instructor</option>
-          {instructors.map((inst, i) => <option key={i} value={inst.full_name}>{inst.full_name}</option>)}
+          {instructors.map((inst, i) => <option key={i} value={inst.name}>{inst.name}</option>)}
         </select>
         <button onClick={handleAssign}>Assign</button>
       </div>
