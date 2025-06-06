@@ -88,6 +88,10 @@ function App() {
     const updatedWorkshop = {
       ...workshop,
       students: [...workshop.students, studentName],
+      date: workshop.date || "", // Ensure date is included
+    instructors: workshop.instructors || [], // Ensure instructors are included
+    description: workshop.description || "", // Ensure description is included
+
     };
 
     await updateWorkshop(updatedWorkshop);
@@ -135,6 +139,7 @@ function App() {
 
   const updateWorkshop = async (workshop) => {
     try {
+      console.log("Updating workshop:", workshop); 
       await axios.put(`http://127.0.0.1:8000/workshops/${workshop.subject}`, workshop);
       fetchData();
     } catch (err) {
