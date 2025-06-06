@@ -81,7 +81,7 @@ function App() {
     if (workshop.students.includes(studentName)) return;
 
     if (workshop.students.length >= 10) {
-      alert("This workshop is full. Maximum 10 students allowed.");
+      alert("This workshop is full. Maximum 10 students are allowed.");
       return;
     }
 
