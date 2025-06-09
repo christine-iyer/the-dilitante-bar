@@ -140,7 +140,7 @@ function App() {
   const updateWorkshop = async (workshop) => {
     try {
       console.log("Updating workshop:", workshop); 
-      await axios.put(`http://127.0.0.1:8000/workshops/${workshop.subject}`, workshop);
+      await axios.put(`http://127.0.0.1:8000/workshops/${workshop.id}`, workshop);
       fetchData();
     } catch (err) {
       console.error("Failed to update workshop:", err);
