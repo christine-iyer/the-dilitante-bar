@@ -3,7 +3,7 @@
      margin: auto;
      padding: 20px;
      font-family: sans-serif;
-     background-color: rgba(210, 105, 30, 0.137);
+     background-color: rgba(62, 189, 183, 0.137);
    }
    
    .section {
@@ -28,11 +28,11 @@
       grid-gap: 20px;
    }
    .workshop-card {
-    border: 1px solid #a51c1c;
+    border: 1px solid rgb(229,229s,181);
     padding: 16px;
     margin-bottom: 8px;
     background-color: #d5acac;
-    box-shadow: #d31818;
+    box-shadow: rgb(62, 189,183);
     border-radius: 6px;
   }
   
