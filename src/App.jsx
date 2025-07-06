@@ -1,6 +1,8 @@
 import React, { useState, useEffect } from "react";
 import axios from "axios";
 import { useDrag, useDrop } from "react-dnd";
+import AuthPage from "./components/AuthPage";
+
 import "./App.css";
 
 const ItemTypes = {
@@ -171,6 +173,7 @@ function App() {
 
   return (
     <div className="container">
+      <AuthPage />
       <h1>Codebar Management</h1>
 
       <div className="section">
