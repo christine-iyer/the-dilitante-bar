@@ -70,7 +70,8 @@ const AuthPage = () => {
               onChange={handleInputChange}
               style={{ width: "100%", padding: "8px", marginTop: "5px" }}
             >
-              <option value="user">User</option>
+              <option value="student">Student</option>
+              <option value="instructor">Instructor</option>
               <option value="admin">Admin</option>
             </select>
           </div>

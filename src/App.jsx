@@ -75,6 +75,8 @@ function App() {
   const [selectedWorkshop, setSelectedWorkshop] = useState("");
   const [assignedStudent, setAssignedStudent] = useState("");
   const [assignedInstructor, setAssignedInstructor] = useState("");
+  const [users, setUsers] = useState([]);
+
 
   const handleDropStudent = async (subject, studentName) => {
     const workshop = workshops.find((w) => w.subject === subject);
@@ -105,6 +107,20 @@ function App() {
     setInstructors(DEFAULT_INSTRUCTORS);
     setWorkshops(DEFAULT_WORKSHOPS);
   };
+
+  const fetchUsers = async () => {
+    try {
+      const response = await axios.get("http://127.0.0.1:8000/users/");
+      setUsers(response.data);
+    } catch (error) {
+      console.error("Error fetching users:", error);
+    }
+  };
+  
+  useEffect(() => {
+    fetchUsers();
+  }, []);
+
 
   const fetchData = async () => {
     try {
@@ -173,6 +189,16 @@ function App() {
 
   return (
     <div className="container">
+      <div>
+  <h2>All Users</h2>
+  <ul>
+    {users.map((user, index) => (
+      <li key={index}>
+        <strong>{user.username}</strong> ({user.role})
+      </li>
+    ))}
+  </ul>
+</div>
       <AuthPage />
       <h1>Codebar Management</h1>
 
